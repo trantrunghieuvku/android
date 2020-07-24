@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <title>Word Manager</title>
+    <link href="../static/images/logo.png" th:href="@{/images/logo.png}" rel="shortcut icon" />
+
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+    <!-- Font Awesome -->
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous" />
+    <!-- Custom style -->
+    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <nav th:fragment="header" class="navbar navbar-dark bg-dark">
+        <a href="" th:href="@{/}" class="navbar-brand">
+            Word Manager
+        </a>
+        
+    </nav>
+
+    
+    <div class="container" id="main-content">
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${successMessage}"></span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="row">
+            
+            <div class="col-6 no-padding">
+                <form class="form-inline" action="#" th:action="@{/employee/search/}" method="get">
+                    <input class="form-control mr-sm-2" type="search" name="s" placeholder="Search by word ..." />
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fa fa-search"></i> Search
+                    </button>
+                </form>
+            </div>
+
+            <div class="col-6 no-padding">
+                <a href="#" th:href="@{/add}" class="btn btn-success float-right">
+                    <i class="fa fa-plus-square"></i> New word
+                </a>
+                
+            </div>
+            
+        </div>
+
+        <div class="row mt-4">
+            
+            <th:block th:if="${#lists.isEmpty(words.pageList)}">
+                <h5>No words</h5>
+            </th:block>
+
+            <th:block th:unless="${#lists.isEmpty(words.pageList)}">
+                <div class="table-responsive">
+                    <h5>List of words</h5>
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>ID</th>
+                            <th>Word</th>
+                            <th>Pronounce</th>
+                            <th>Translate</th>
+                            <th>Category</th>
+                            <th>Type</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="words,iterStat : ${words.pageList}">
+                            <th scope="row" th:text="${iterStat.count}"></th>
+                            <td th:text="${words.id}"></td>
+                            <td th:text="${words.word}"></td>
+                            <td th:text="${words.proEn}"></td>
+                            <td th:text="${words.transVn}"></td>
+                            <td th:text="${words.category}"></td>
+                            <td th:text="${words.type}"></td>
+                            
+                            <td>
+                                <a href="#" th:href="@{/edit/{id}(id=${words.id})}" class="mr-sm-2 text-primary">
+                                    <i class="fa fa-pencil"></i>
+                                </a>
+                                <a href="#" th:href="@{/english/{id}/delete(id=${words.id})}" class="text-danger">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                 <ul class="pagination">
+			<li
+				th:class="${currentIndex == 1}? 'page-item disabled' : 'page-item'">
+				<a class="page-link" th:href="@{/employee/page/1}">First</a>
+			</li>
+			<li
+				th:class="${currentIndex == 1}? 'page-item disabled': 'page-item' ">
+				<a class="page-link" aria-label="Previous"
+				th:href="@{|${baseUrl}${currentIndex - 1}|}"
+				title='Go to previous page'><span aria-hidden="true">«</span>
+					<span class="sr-only">Previous</span></a>
+			</li>
+			<li th:each="item : ${#numbers.sequence(beginIndex,endIndex)}"
+				th:class="${item == currentIndex ? 'page-item active' :'page-item' }">
+				<a class="page-link" th:href="@{|${baseUrl}${item}|}"> <span
+					th:text='${item}'>1</span>
+			</a>
+			</li>
+			<li
+				th:class="${currentIndex == totalPageCount}? 'page-item disabled': 'page-item'">
+				<a class="page-link" aria-label="Next"
+				th:href="@{|${baseUrl}${currentIndex + 1}|}" title='Go to next page'><span
+					aria-hidden="true">»</span> <span class="sr-only">Next</span></a>
+			</li>
+			<li
+				th:class="${currentIndex == totalPageCount}? 'page-item disabled':'page-item'">
+				<a class="page-link" th:href="@{|${baseUrl}${totalPageCount}|}">Last</a>
+			</li>
+		</ul>
+            </th:block>
+        </div>
+    </div>
+    <footer th:fragment="footer" class="container">
+        <strong>&copy; 2020</strong>
+    </footer>
+
+</body>
+</html>

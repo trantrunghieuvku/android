@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <title>Word Manager</title>
+    <link href="../static/images/logo.png" th:href="@{/images/logo.png}" rel="shortcut icon" />
+
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+    <!-- Font Awesome -->
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous" />
+    <!-- Custom style -->
+    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <nav th:fragment="header" class="navbar navbar-dark bg-dark">
+        <a href="" th:href="@{/}" class="navbar-brand">
+            Word Manager
+        </a>
+    </nav>
+
+    
+    
+    <div class="container" id="main-content">
+        <div class="row d-flex justify-content-center">
+            <div th:if="${failMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <span th:text="${failMessage}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form style="min-width: 300px;" action="#" th:action="@{/save}" th:object="${word}" method="post" novalidate="novalidate">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>Word</th>
+                        <th>Pronounce</th>
+                        <th>Translate</th>
+                        <th>category</th>
+                        <th>type</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr >
+                            <td  >
+                                <input class="form-control" type="text" placeholder="Word"
+               th:field="*{word}" th:errorclass="field-error"></input>
+        <em th:if="${#fields.hasErrors('word')}" th:errors="*{word}"></em>
+                            </td>
+                            <td>
+                                <input class="form-control" type="text" placeholder="Pronounce"
+               th:field="*{proEn}" th:errorclass="field-error"/>
+        <em th:if="${#fields.hasErrors('proEn')}" th:errors="*{proEn}"></em>
+                            </td>
+                            <td class="form-group">
+                                <input class="form-control" type="text" placeholder="Translate"
+               th:field="*{transVn}" th:errorclass="field-error" />
+        <em th:if="${#fields.hasErrors('transVn')}" th:errors="*{transVn}"></em>
+                            </td>
+                            <td class="form-group">
+                                <input class="form-control" type="text" placeholder="category"
+               th:field="*{category}" th:errorclass="field-error" />
+        <em th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></em>
+                            </td>
+                            <td class="form-group">
+                                <input class="form-control" type="text" placeholder="Type"
+               th:field="*{type}" th:errorclass="field-error" />
+        <em th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></em>
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-block btn-primary">
+                                    <i class="fa fa-save"></i> Save
+                                </button>
+                            </td>
+            
+                        </tr>
+                        </tbody>
+                    </table>
+            </form>
+        </div>
+    </div>
+    <footer th:fragment="footer" class="container">
+        <strong>&copy; 2020</strong>
+    </footer>
+
+</body>
+</html>
